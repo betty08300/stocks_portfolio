@@ -1,5 +1,11 @@
 import React from 'react';
-import SessionForm from './session_form';
+import SignupForm from './signupForm';
+import LoginForm from './loginForm';
+import {
+  BrowserRouter,
+  Route,
+  Switch
+} from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props){
@@ -7,19 +13,27 @@ class App extends React.Component {
   }
 
   componentDidMount = async() => {
-    const response = await fetch('http://localhost:3001/')
-    const users = await response.json();
+    const resp = await fetch('http://localhost:3001/')
+    const users = await resp.json();
     console.log(users); 
   }
 
   render(){
     return(
       <div>
-        <SessionForm/> 
+        <BrowserRouter>
+          <Switch>
+            <Route path='/signup' component={SignupForm}/>
+            <Route path='/login' component={LoginForm}/>
+
+          </Switch>
+    
+        </BrowserRouter>
       </div>
     )
   }
 }
+
 
 
 export default App;
