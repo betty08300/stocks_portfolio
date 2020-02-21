@@ -6,7 +6,8 @@ const transactionSchema = new Schema({
   company: { type: String, require: true},
   ticker: { type: String, require: true},
   price: { type: Number, require: true},
-  share: { type: Number, require: true}
+  share: { type: Number, require: true},
+  transactionTime: { type: Date, require: true, default: Date.now()}
 });
 
 const Transaction = mongoose.model('Transaction', transactionSchema);

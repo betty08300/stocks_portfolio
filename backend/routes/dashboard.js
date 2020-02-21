@@ -8,7 +8,9 @@ dashboardRouter.use(async(req, res, next)=>{
     const { token } = req.cookies;
     try {
         
-        await verifyToken(token)
+    const payload = await verifyToken(token);
+    req.userId = payload.userId;
+
     } catch(error) {
         console.log(error.message); 
         res
@@ -20,6 +22,7 @@ dashboardRouter.use(async(req, res, next)=>{
 })
 
 dashboardRouter.get('/transactions', async(req, res) => {
+    console.log('transactionuserId', req.userId)
     res.json({msg: 'history'})
 });
 
@@ -40,21 +43,21 @@ dashboardRouter.get('/portfolio', async(req, res) => {
 //     share: 4
 //}
 
-const testTransaction = async() => {
-    await connectDatabase();
-    try {
-        await Transaction.collection.drop();
-    } catch (error){
-        console.log(error.errmsg);
-    }
-    await Transaction.create({
-        status: 'sell',
-        company: 'IBM',
-        ticker: 'IBM',
-        price: 200,
-        share: 40
-    });
-}
+// const testTransaction = async() => {
+//     await connectDatabase();
+//     try {
+//         await Transaction.collection.drop();
+//     } catch (error){
+//         console.log(error.errmsg);
+//     }
+//     await Transaction.create({
+//         status: 'sell',
+//         company: 'IBM',
+//         ticker: 'IBM',
+//         price: 200,
+//         share: 40
+//     });
+// }
 
 // testTransaction();
 

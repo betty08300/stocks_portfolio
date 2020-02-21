@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
+const Transaction = require('./transaction');
 
 const userSchema = new Schema({
   name: { type: String, require: true}, 
   email: { type: String, require: true},
   password: { type: String, require: true},
-  funds: { type: Number, require: true, default: 5000 }
+  funds: { type: Number, require: true, default: 5000 },
+  transactions: [ Transaction.schema ]
 });
 
 
