@@ -17,7 +17,7 @@ const SignupForm = (props) => {
         const user = { name, email, password }
         console.log(user)
         e.preventDefault();
-        const resp = await fetch('http://localhost:3001/user/signup', {
+        const resp = await fetch('/user/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,23 +34,24 @@ const SignupForm = (props) => {
     
     
     return(
-        <div>
-            <form onSubmit={handleSubmit}>
-                <h3>Sign Up</h3>
+        <div className="container d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
+            <div className="border border-dark container d-flex flex-column justify-content-between align-items-center" style={{width: '400px', minWidth: '300px'}}>
+                <h3>Register</h3>
+                <form className="container d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
 
-                <label>Name</label>
-                    <input type='text' value={name} onChange={update('name')}/>
-            
-                <label>Email</label>
-                    <input type='text' value={email} onChange={update('email')}/>
+                    <label>Name</label>
+                        <input type='text' value={name} onChange={update('name')}/>
                 
-                <label>password</label>
-                    <input type='text' value={password} onChange={update('password')}/>
+                    <label>Email</label>
+                        <input type='text' value={email} onChange={update('email')}/>
+                    
+                    <label>password</label>
+                        <input type='text' value={password} onChange={update('password')}/>
 
-                <button>Sign Up</button>
-            </form>
-            <Link to='/login'>Login</Link>
-
+                    <button style={{margin:'10px'}}>Sign Up</button>
+                </form>
+                <Link to='/login'>Login</Link>
+            </div>
         </div>
     )
 }

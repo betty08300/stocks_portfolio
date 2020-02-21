@@ -2,7 +2,22 @@ const express = require('express');
 const Transaction = require('../db/models/transaction'); 
 const dashboardRouter = express.Router();
 const connectDatabase = require('../db/database');
+const { verifyToken } = require('../util/session_token');
 
+dashboardRouter.use(async(req, res, next)=>{
+    const { token } = req.cookies;
+    try {
+        
+        await verifyToken(token)
+    } catch(error) {
+        console.log(error.message); 
+        res
+            .status(401)
+            .json({ message: 'failed to authenticate' })
+        return 
+    }
+    next();
+})
 
 dashboardRouter.get('/transactions', async(req, res) => {
     res.json({msg: 'history'})
@@ -27,7 +42,11 @@ dashboardRouter.get('/portfolio', async(req, res) => {
 
 const testTransaction = async() => {
     await connectDatabase();
-    await Transaction.collection.drop();
+    try {
+        await Transaction.collection.drop();
+    } catch (error){
+        console.log(error.errmsg);
+    }
     await Transaction.create({
         status: 'sell',
         company: 'IBM',
@@ -37,7 +56,7 @@ const testTransaction = async() => {
     });
 }
 
-testTransaction();
+// testTransaction();
 
 
 module.exports = dashboardRouter; 

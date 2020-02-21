@@ -7,21 +7,23 @@ const User = require('./db/models/user');
 const userRouter = require('./routes/user');
 const dashboardRouter = require('./routes/dashboard');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const seed = async () => {
-    await connectDatabase()
+    const db = await connectDatabase();
     try {
         await User.collection.drop();
     } catch (error){
         console.log(error.errmsg);
     }
-    await User.create({name:'Betty', email:'betty@gmail.com', password:'123456'});
+    await User.createAuthUser({name:'Betty', email:'betty@gmail.com', password:'123456'});
 }
 
 seed();
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use('/user', userRouter);
 app.use('/dashboard', dashboardRouter);
