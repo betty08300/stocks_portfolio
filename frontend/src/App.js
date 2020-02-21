@@ -1,12 +1,12 @@
 import React from 'react';
-import SignupForm from './signupForm';
-import LoginForm from './loginForm';
+import SignupForm from './Components/signupForm';
+import LoginForm from './Components/loginForm';
 import {
   BrowserRouter,
   Route,
   Switch
 } from 'react-router-dom';
-import Portfolio from './portfolio';
+import Portfolio from './Components/portfolio';
 
 class App extends React.Component {
   constructor(props){

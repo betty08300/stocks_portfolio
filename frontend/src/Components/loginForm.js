@@ -33,18 +33,21 @@ const LoginForm = (props) => {
     
 
     return(
-        <div>
-            <form onSubmit={handleSubmit}>
+        <div className="container d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
+            <div className="border border-dark container d-flex flex-column justify-content-between align-items-center" style={{width: '400px', minWidth: '300px'}}>
                 <h3>Login</h3>
-            
-                <label>Email</label>
-                    <input type='text' value={email} onChange={update('email')}/>
+                <form className="container d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
                 
-                <label>password</label>
+                    <label>Email</label>
+                    <input type='text' value={email} onChange={update('email')}/>
+                    
+                    <label>Password</label>
                     <input type='text' value={password} onChange={update('password')}/>
-                <button>Login</button>
-            </form>
-            <Link to='/signup'>Sign Up</Link>
+                    
+                    <button>Login</button>
+                </form>
+                <Link to='/signup'>Don't have an account?</Link>
+            </div>
         </div>
     )
 }
