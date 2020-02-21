@@ -9,6 +9,6 @@ const transactionSchema = new Schema({
   share: { type: Number, require: true}
 });
 
-const Transaction = mongoose.model('User', userSchema);
+const Transaction = mongoose.model('Transaction', transactionSchema);
 
-module.exports = User;
+module.exports = Transaction;

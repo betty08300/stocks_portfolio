@@ -6,6 +6,7 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
+import Portfolio from './portfolio';
 
 class App extends React.Component {
   constructor(props){
@@ -25,6 +26,7 @@ class App extends React.Component {
           <Switch>
             <Route path='/signup' component={SignupForm}/>
             <Route path='/login' component={LoginForm}/>
+            <Route path='/portfolio' component={Portfolio}/>
 
           </Switch>
     
