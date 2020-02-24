@@ -15,9 +15,11 @@ userRouter.post('/signup', async(req, res) => {
 });
 
 userRouter.post('/login', async(req, res) => {
-    const isAuthed = await User.checkAuthUser(req.body.user);
-    if (isAuthed){
-        res.status(200).json({message: 'success to sign in'})
+    const user = await User.checkAuthUser(req.body.user);
+    if (user){
+        const payload = { userId: user.id };
+        const token = await generateToken(payload); 
+        res.status(200).cookie('token', token).json({message: 'success to sign in'})
     } else {
         res.status(400).json({message: 'wrong email or password'})
     }

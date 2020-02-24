@@ -30,7 +30,7 @@ class App extends React.Component {
             <Route path='/signup' component={SignupForm}/>
             <Route path='/login' component={LoginForm}/>
             <Route path='/dashboard/portfolio' component={Portfolio}/>
-            <Route path='/dashboard/transaction' component={Transaction}/>
+            <Route path='/dashboard/transactions' component={Transaction}/>
             <Route path='/' component={Splash}/>
 
 

@@ -24,7 +24,11 @@ const SignupForm = (props) => {
             },
             body: JSON.stringify({ user })
         })
-        console.log(await resp.json()); 
+        if (resp.status === 200) {
+            props.history.push('/dashboard/portfolio');
+        } else {
+            console.log('invalid email or password'); 
+        }
     }
 
     const update = (field) => {
@@ -43,10 +47,10 @@ const SignupForm = (props) => {
                         <input type='text' value={name} onChange={update('name')}/>
                 
                     <label>Email</label>
-                        <input type='text' value={email} onChange={update('email')}/>
+                        <input type='email' value={email} onChange={update('email')} required/>
                     
                     <label>password</label>
-                        <input type='text' value={password} onChange={update('password')}/>
+                        <input type='password' value={password} onChange={update('password')} minLength='6'/>
 
                     <button style={{margin:'10px'}}>Sign Up</button>
                 </form>

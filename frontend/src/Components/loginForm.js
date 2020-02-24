@@ -15,14 +15,18 @@ const LoginForm = (props) => {
         const user = { email, password }
         console.log(user)
         e.preventDefault();
-        const resp = await fetch('http://localhost:3001/user/login', {
+        const resp = await fetch('/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ user })
         })
-        console.log(await resp.json()); 
+        if (resp.status === 200) {
+            props.history.push('/dashboard/portfolio');
+        } else {
+            console.log('invalid email or password'); 
+        }
         
     }
 
@@ -42,7 +46,7 @@ const LoginForm = (props) => {
                     <input type='text' value={email} onChange={update('email')}/>
                     
                     <label>Password</label>
-                    <input type='text' value={password} onChange={update('password')}/>
+                    <input type='password' value={password} onChange={update('password')}/>
                     
                     <button style={{margin:'10px 0'}}>Login</button>
                 </form>

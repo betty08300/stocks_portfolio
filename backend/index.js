@@ -17,22 +17,28 @@ const seed = async () => {
         console.log(error.errmsg);
     }
     const user = await User.createAuthUser({name:'Betty', email:'betty@gmail.com', password:'123456'});
-     await user.transactions.push ({
-        status: 'sell',
+     await user.buy ({
         company: 'IBM',
         ticker: 'IBM',
         price: 200,
         share: 40
-    }, 
-    {
-        status: 'buy',
-        company: 'XOM',
-        ticker: 'XOM',
-        price: 40,
-        share: 35
+    });
 
+    await user.buy ({
+        company: 'app',
+        ticker: 'app',
+        price: 500,
+        share: 24
+    });
+    await user.buy ({
+        company: 'IBM',
+        ticker: 'IBM',
+        price: 30,
+        share: 4
     })
-    console.log(user.transactions);
+
+    // console.log(user);
+
 }
 
 seed();

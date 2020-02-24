@@ -1,16 +1,17 @@
-const express = require('express');
-const Transaction = require('../db/models/transaction'); 
+const express = require('express'); 
 const dashboardRouter = express.Router();
 const connectDatabase = require('../db/database');
 const { verifyToken } = require('../util/session_token');
+const User = require('../db/models/user'); 
 
 dashboardRouter.use(async(req, res, next)=>{
     const { token } = req.cookies;
     try {
         
-    const payload = await verifyToken(token);
-    req.userId = payload.userId;
-
+        const payload = await verifyToken(token);
+        req.userId = payload.userId;
+        
+        next();
     } catch(error) {
         console.log(error.message); 
         res
@@ -18,12 +19,14 @@ dashboardRouter.use(async(req, res, next)=>{
             .json({ message: 'failed to authenticate' })
         return 
     }
-    next();
 })
 
 dashboardRouter.get('/transactions', async(req, res) => {
-    console.log('transactionuserId', req.userId)
-    res.json({msg: 'history'})
+    console.log('transactionuserId', req.userId);
+    let user = await User.findById(req.userId); 
+    // res.status(200).json({message: 'hello'}); 
+    user = user.toObject()
+    res.json({transaction: user.transactions}); 
 });
 
 dashboardRouter.post('/transactions', async(req, res) => {
@@ -35,13 +38,6 @@ dashboardRouter.get('/portfolio', async(req, res) => {
 });
 
 
-// let transaction = {
-//     status: 'buy',
-//     company: 'Google',
-//     ticker: 'GOL',
-//     price: 100,
-//     share: 4
-//}
 
 // const testTransaction = async() => {
 //     await connectDatabase();
@@ -51,10 +47,10 @@ dashboardRouter.get('/portfolio', async(req, res) => {
 //         console.log(error.errmsg);
 //     }
 //     await Transaction.create({
-//         status: 'sell',
+//         status: 'buy',
 //         company: 'IBM',
 //         ticker: 'IBM',
-//         price: 200,
+//         price: 10,
 //         share: 40
 //     });
 // }
