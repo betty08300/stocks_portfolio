@@ -26,36 +26,59 @@ dashboardRouter.get('/transactions', async(req, res) => {
     let user = await User.findById(req.userId); 
     // res.status(200).json({message: 'hello'}); 
     user = user.toObject()
-    res.json({transaction: user.transactions}); 
-});
-
-dashboardRouter.post('/transactions', async(req, res) => {
-    res.json({msg:'ehllp'})
+    res.json({transactions: user.transactions}); 
 });
 
 dashboardRouter.get('/portfolio', async(req, res) => {
-    res.json({msg: 'portfolio'})
+    let user = await User.findById(req.userId); 
+    user = user.toObject();
+    res.json({stocks: user.stocks});
+});
+
+dashboardRouter.post('/portfolio', async(req, res) => {
+    const user = await User.findById(req.userId);
+    const { status, ticker, share } = request.body; 
+    
+  
 });
 
 
 
-// const testTransaction = async() => {
-//     await connectDatabase();
-//     try {
-//         await Transaction.collection.drop();
-//     } catch (error){
-//         console.log(error.errmsg);
-//     }
-//     await Transaction.create({
-//         status: 'buy',
-//         company: 'IBM',
-//         ticker: 'IBM',
-//         price: 10,
-//         share: 40
-//     });
-// }
 
-// testTransaction();
+
+
+
+
+
+
+
+
+// dashboardRouter.post('/stocks', async (request, response) => {
+//     const user = await User.findById(request.userId);
+//     const { type, ticker, amount } = request.body;
+//     if (type === 'buy') {
+//       try {
+//         const iexStock = await Stock.getOneByTicker(ticker);
+//         await user.buyStock({
+//           ticker,
+//           company: iexStock.quote.companyName,
+//           price: iexStock.quote.latestPrice,
+//           amount
+//         });
+//         response
+//           .status(200)
+//           .json({ message: 'buy successful' });
+//       } catch (error) {
+//         response
+//           .status(400)
+//           .json({ message: error.message });
+//       }
+//     }
+//   });
+
+
+
+
 
 
 module.exports = dashboardRouter; 

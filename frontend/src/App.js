@@ -1,7 +1,7 @@
 import React from 'react';
 import SignupForm from './Components/signupForm';
 import LoginForm from './Components/loginForm';
-import Transaction from './Components/transaction';
+import Transaction from './Components/transactions';
 import Splash from './Components/splash';
 import {
   BrowserRouter,
@@ -13,14 +13,16 @@ import './index.scss';
 
 class App extends React.Component {
   constructor(props){
-    super(props)
+    super(props);
   }
 
-  componentDidMount = async() => {
-    const resp = await fetch('http://localhost:3001/')
-    const users = await resp.json();
-    console.log(users); 
-  }
+  // componentDidMount = async() => {
+  //   const resp = await fetch('http://localhost:3001/')
+  //   const users = await resp.json();
+  //   console.log(users); 
+  // }
+
+  
 
   render(){
     return(
@@ -28,8 +30,8 @@ class App extends React.Component {
         <BrowserRouter>
           <Switch>
             <Route path='/signup' component={SignupForm}/>
-            <Route path='/login' component={LoginForm}/>
-            <Route path='/dashboard/portfolio' component={Portfolio}/>
+            <Route path='/login' component={LoginForm} />
+            <Route path='/dashboard/portfolio' component={Portfolio} />
             <Route path='/dashboard/transactions' component={Transaction}/>
             <Route path='/' component={Splash}/>
 
