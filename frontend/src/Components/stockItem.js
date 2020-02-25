@@ -1,22 +1,27 @@
 import React from 'react';
-import {currencyFormatter} from '../Constants/helper'
+import {currencyFormatter} from '../Constants/helper';
+
 
 const StockItem = ({stock, price}) => {
     const {ticker, company, share} = stock;
-    console.log(stock, price)
+    console.log('stock:', stock);
+    
+
     return (
-        <div>
-            <div>Company</div>
-            {company}
-            <div>Ticker</div>
-            {ticker}
-            <div>Shares</div>
-            {share}
-            <div>Price</div>
-            ${currencyFormatter(price)}
-            <div>Total Value</div>
-            ${currencyFormatter(price * share)}
-        </div>
+
+        <tr>
+            <td>{ticker}
+                <div>
+                    {company}
+                </div>
+            </td>
+            <td> {share}</td>
+            <td>${currencyFormatter(price)}
+            </td>
+            <td> ${currencyFormatter((price * share).toFixed(2))}</td>
+            
+        </tr>
+        
     )
 }
 

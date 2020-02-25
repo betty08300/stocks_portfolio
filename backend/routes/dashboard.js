@@ -22,9 +22,9 @@ dashboardRouter.use(async(req, res, next)=>{
 })
 
 dashboardRouter.get('/transactions', async(req, res) => {
-    console.log('transactionuserId', req.userId);
+    //console.log('transactionuserId', req.userId);
     let user = await User.findById(req.userId); 
-    // res.status(200).json({message: 'hello'}); 
+    //res.status(200).json({message: 'hello'}); 
     user = user.toObject()
     res.json({transactions: user.transactions}); 
 });
@@ -37,9 +37,13 @@ dashboardRouter.get('/portfolio', async(req, res) => {
 
 dashboardRouter.post('/portfolio', async(req, res) => {
     const user = await User.findById(req.userId);
-    const { status, ticker, share } = request.body; 
-    
-  
+    try {
+        await user.buy(req.body.order);  
+        res.status(200).json('buy successful');
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({message: error.message}); 
+    }
 });
 
 

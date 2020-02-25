@@ -37,6 +37,9 @@ userSchema.statics.checkAuthUser = async function(user) {
 
 userSchema.methods.buy = async function(order){
     const {company, ticker, share, price} = order; 
+    if (this.fund < share * price) {
+        throw Error('not enough fund to buy')
+    }
     await this.transactions.push({status:'buy', company, ticker, share, price});
     const matchStocks = this.stocks.filter(stock => {
         return stock.ticker === ticker
@@ -50,6 +53,13 @@ userSchema.methods.buy = async function(order){
 
     await this.save(); 
 }
+
+// user.buy({
+//     company: 'Amazon Inc',
+//     ticker: 'AMZN',
+//     share: 3,
+//     price: 50
+// })
 
 const User = mongoose.model('User', userSchema);
 

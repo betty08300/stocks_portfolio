@@ -2,7 +2,25 @@
     height: 100vh;
 }
 
+.splash-box{
+    width: 300px;
+    min-width: 200px; 
+}
+
+.linkBtn{
+    margin:30px 0;
+    color: #aaaaaa;
+    border-color: #aaaaaa;
+}
+
+.clickBtn{
+    color: #aaaaaa;
+    border-color: #aaaaaa;
+    margin: 10px;
+}
+
 body{
     background-image: url('./landing.png');
     color: #aaaaaa;
+    
 }

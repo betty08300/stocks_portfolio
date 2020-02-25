@@ -48,7 +48,7 @@ const LoginForm = (props) => {
                     <label>Password</label>
                     <input type='password' value={password} onChange={update('password')}/>
                     
-                    <button style={{margin:'10px 0'}}>Login</button>
+                    <button className='btn btn-outline-dark clickBtn'>Login</button>
                 </form>
                 <Link to='/signup'>Don't have an account?</Link>
             </div>

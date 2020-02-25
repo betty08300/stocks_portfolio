@@ -28,9 +28,31 @@ const Transactions = (props) => {
 
     return (
         <div>
-            <h3>Transaction</h3>
-            {transactionItems}
-            <Link to='/dashboard/portfolio'>Portfolio</Link>
+            <div className='container'>
+                <div className='row'>
+                    <div className='col'>
+                        <h3>Transaction</h3>
+                    </div>
+                    <div className='col'>
+                        <Link to='/dashboard/portfolio'>Portfolio</Link>
+                    </div>
+                </div>
+            </div>
+            
+            <table className='table'>
+            <thead>
+                <tr>
+                    <th scope='col'>Status</th>
+                    <th scope='col'>Ticker</th>
+                    <th scope='col'>Shares</th>
+                    <th scope='col'>Price</th>
+                    <th scope='col'>Date/Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {transactionItems}
+            </tbody>
+            </table>
         </div>
     )
 }

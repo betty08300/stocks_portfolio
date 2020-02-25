@@ -14,7 +14,7 @@ const stockSchema = new Schema({
   share: { 
         type: Number, 
         require: true
-    }
+    },
 });
 
 const Stock = mongoose.model('Stock', stockSchema);

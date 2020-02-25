@@ -33,7 +33,6 @@ const SignupForm = (props) => {
     }
 
     const update = (field) => {
-        // return event => this.setState({[field]: event.target.value})
         return e => inputObj[field](e.target.value);
     }
     
@@ -53,7 +52,7 @@ const SignupForm = (props) => {
                     <label>password</label>
                         <input type='password' value={password} onChange={update('password')} minLength='6'/>
 
-                    <button style={{margin:'10px'}}>Sign Up</button>
+                    <button className='btn btn-outline-dark clickBtn'>Sign Up</button>
                 </form>
                 <Link to='/login'>Login</Link>
             </div>
