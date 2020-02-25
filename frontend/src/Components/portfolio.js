@@ -51,6 +51,11 @@ const Portfolio = (props) => {
     setStockPrices(prices);
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+  }
+
   const handleChange = (e) => {
     setTicker(e.target.value.toUpperCase());
   }
@@ -62,8 +67,7 @@ const Portfolio = (props) => {
   const totalPortfolio = stocks.length > 0 ? stocks.reduce((acc, {ticker, share}) => {
       return acc + (stockPrices[ticker] * share)}, 0)
     : 0
-  // const totalValue = (stock) => stock.amount * stock.latestPrice;
-
+  
   const stockItems = stocks.map((stock, idx) =>  
       <StockItem stock={stock} key={idx} price={stockPrices[stock.ticker]}/>
     ) 
@@ -72,7 +76,7 @@ const Portfolio = (props) => {
   return (
     <div className="container">
       <h1 className="row">
-        Portfolio ${currencyFormatter(totalPortfolio)}
+        Portfolio ${currencyFormatter(totalPortfolio.toFixed(2))}
       </h1>
       <div className="row">
         <div className="col">
@@ -84,11 +88,11 @@ const Portfolio = (props) => {
             Cost - $xxxx
           </div>
           <div>
-            {/* <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
               <input className="row" type='text' value={ticker} onChange={handleChange} placeholder='Ticker'/>
               <input className="row" type='number' value={qty} onChange={handleSetQty} placeholder='QTY'/>
               <button className="row">Buy</button>
-            </form> */}
+            </form>
           </div>
         </div>
       </div>

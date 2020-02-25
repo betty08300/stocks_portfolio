@@ -37,7 +37,7 @@ const LoginForm = (props) => {
     
 
     return(
-        <div className="container d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
+        <div className="container d-flex justify-content-center align-items-center fullViewHeight">
             <div className="border border-dark container d-flex flex-column justify-content-between align-items-center" style={{width: '400px', minWidth: '300px'}}>
                 <h3>Login</h3>
                 <form className="container d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
