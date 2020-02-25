@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+import {currencyFormatter} from '../Constants/helper'
 
-const StockItem = (props) => {
-    const {ticker, company, share} = props.stock;
-
-    
-
+const StockItem = ({stock, price}) => {
+    const {ticker, company, share} = stock;
+    console.log(stock, price)
     return (
         <div>
             <div>Company</div>
@@ -13,6 +12,10 @@ const StockItem = (props) => {
             {ticker}
             <div>Shares</div>
             {share}
+            <div>Price</div>
+            ${currencyFormatter(price)}
+            <div>Total Value</div>
+            ${currencyFormatter(price * share)}
         </div>
     )
 }

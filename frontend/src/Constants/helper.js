@@ -1,0 +1,1 @@
+export const currencyFormatter = (amount = 0) => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
