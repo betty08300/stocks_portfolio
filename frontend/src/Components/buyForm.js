@@ -164,7 +164,7 @@ const BuyForm = ({funds}) => {
                 <input className="pl-2 pr-2" type='text' value={ticker} onChange={handleChange} placeholder='Ticker' required/>
                 <div className={ticker && !clicked ? 'position-absolute bg-white pt-2' : 'd-none'} style={{top:'29px', width: '186px'}}> {possibleMatches} </div>
                 <input className="pl-2 pr-2" type='number' min='1' value={share} onChange={handleSetShare} placeholder='Share' required/>
-                <button className="">Buy</button>
+                <button >Buy</button>
               </form>
               {fundError && (
                 <div className='text-danger'>

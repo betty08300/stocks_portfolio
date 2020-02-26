@@ -28,14 +28,12 @@ const Transactions = (props) => {
 
     return (
         <div className="p-5">
-            <div className='container'>
-                <div className='row'>
-                    <div className='col'>
-                        <h3>Transaction</h3>
+            <div className='d-flex justify-content-between align-items-center'>
+                <div className='d-flex flex-column'>
+                    <div>
+                        <Link to='/dashboard/portfolio'>Back To Portfolio</Link>
                     </div>
-                    <div className='col'>
-                        <Link to='/dashboard/portfolio'>Portfolio</Link>
-                    </div>
+                    <h3>Transaction</h3>
                 </div>
             </div>
             

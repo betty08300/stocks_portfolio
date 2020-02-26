@@ -85,12 +85,12 @@ const Portfolio = (props) => {
       <div className="p-5">
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-column">
+            <div>
+              <Link to='/dashboard/transactions'>Go To Transaction</Link>
+            </div>
             <h1>
               Portfolio ${currencyFormatter(totalPortfolio.toFixed(2))}
             </h1>
-            <div>
-              <Link to='/dashboard/transactions'>Transaction</Link>
-            </div>
           </div>
           <BuyForm funds={funds}/>
           </div>
