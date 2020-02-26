@@ -15,7 +15,6 @@ const SignupForm = (props) => {
 
     const handleSubmit = async(e) => {
         const user = { name, email, password }
-        console.log(user)
         e.preventDefault();
         const resp = await fetch('/user/signup', {
             method: 'POST',

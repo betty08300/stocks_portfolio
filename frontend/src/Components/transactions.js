@@ -20,8 +20,6 @@ const Transactions = (props) => {
         setTransactions(data.transactions); 
     }
 
-    console.log(transactions);
-
     const transactionItems = transactions.map((transaction, index) => {
         return <TransactionItem transaction={transaction} key={index}/>
     })

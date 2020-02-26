@@ -12,9 +12,8 @@ const LoginForm = (props) => {
     }
 
     const handleSubmit = async(e) => {
-        const user = { email, password }
-        console.log(user)
         e.preventDefault();
+        const user = { email, password }
         const resp = await fetch('/user/login', {
             method: 'POST',
             headers: {

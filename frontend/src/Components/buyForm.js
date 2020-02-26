@@ -75,7 +75,7 @@ const BuyForm = ({funds, fetchPortfolio}) => {
         },
         body: JSON.stringify({ order })
       })
-      fetchPortfolio();
+      await fetchPortfolio(); // TODO/
     }
   }
 
@@ -96,7 +96,7 @@ const BuyForm = ({funds, fetchPortfolio}) => {
     if(possibleMatches.length === 0) {
       possibleMatches = ['No such ticker'];
     }
-    console.log(possibleMatches)
+
     return possibleMatches.slice(0,5);
   }
 
@@ -140,7 +140,6 @@ const BuyForm = ({funds, fetchPortfolio}) => {
         )
       }) 
     : null;
-    console.log(fundError);
 
   return (
     <div className='position-relative d-flex align-items-center' style={{minWidth: '200px', minHeight:'100px'}}>

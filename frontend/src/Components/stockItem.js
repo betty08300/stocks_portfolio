@@ -3,10 +3,8 @@ import {currencyFormatter} from '../Constants/helper';
 
 
 const StockItem = ({stock, stockInfos}) => {
-    console.log(stockInfos)
     const {ticker, company, share} = stock;
     const {changePercentage, color, latestPrice} = stockInfos
-    console.log('stock:', stock);
 
     return (
       <tr>

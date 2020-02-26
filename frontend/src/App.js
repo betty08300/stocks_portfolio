@@ -16,14 +16,6 @@ class App extends React.Component {
     super(props);
   }
 
-  // componentDidMount = async() => {
-  //   const resp = await fetch('http://localhost:3001/')
-  //   const users = await resp.json();
-  //   console.log(users); 
-  // }
-
-  
-
   render(){
     return(
       <div>

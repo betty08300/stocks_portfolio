@@ -48,7 +48,6 @@ const Portfolio = (props) => {
         latestPrice,
       };
     }
-    console.log(stockLatestPrices)
     return stockLatestPrices;
   }
   
@@ -64,9 +63,9 @@ const Portfolio = (props) => {
     const portfolioStocks = portfolio.stocks;
     const portfolioTickers = portfolioStocks.map(({ticker}) => ticker);
     const prices = await getStocksInfoAPI(portfolioTickers.join(','));
+    setStockInfos(prices);
     setStocks(portfolioStocks);
     setFunds(portfolio.funds)
-    setStockInfos(prices);
     setIsLoading(false);
   }
 
@@ -74,6 +73,7 @@ const Portfolio = (props) => {
       return acc + (stockInfos[ticker] ? stockInfos[ticker].latestPrice * share : 0)}, 0)
     : 0
   
+  console.log(stockInfos);
 
   const stockItems = stocks.map((stock, idx) =>  
     <StockItem stock={stock} key={idx} stockInfos={stockInfos[stock.ticker]}/>
