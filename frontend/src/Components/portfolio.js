@@ -35,11 +35,11 @@ const Portfolio = (props) => {
       let color;
 
       if(change < 0){
-        color = 'red';
+        color = '#ff000091';
       } else if (change === 0) {
         color = 'grey';
       } else {
-        color = 'green';
+        color = '#096324';
       }
 
       stockLatestPrices[key] = {
@@ -92,7 +92,7 @@ const Portfolio = (props) => {
               Portfolio ${currencyFormatter(totalPortfolio.toFixed(2))}
             </h1>
           </div>
-          <BuyForm funds={funds}/>
+          <BuyForm funds={funds} fetchPortfolio={fetchPortfolio}/>
           </div>
         <div>
         <table className='table'>

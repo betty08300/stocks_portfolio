@@ -16,12 +16,12 @@ const costSpinner = css`
   right: -20px;
 `
 
-const BuyForm = ({funds}) => {
+const BuyForm = ({funds, fetchPortfolio}) => {
   const [allTickers, setAllTickers] = useState([]);
   const [allTickersObj, setAllTickersObj] = useState({});
   const [stockInfo, setStockInfo] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [share, setShare] = useState(0);
+  const [share, setShare] = useState(1);
   const [ticker, setTicker] = useState('');
   const [isLoadingCost, setIsLoadingCost] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -62,7 +62,8 @@ const BuyForm = ({funds}) => {
   }
 
   const handleSubmit = async(e) => {
-    if(funds - stockInfo.price < 0) {
+    e.preventDefault();
+    if(funds - stockInfo.price * share < 0) {
       setFundError('Not enough funds')
     } else{
       if(fundError) setFundError('');
@@ -74,6 +75,7 @@ const BuyForm = ({funds}) => {
         },
         body: JSON.stringify({ order })
       })
+      fetchPortfolio();
     }
   }
 
@@ -138,6 +140,7 @@ const BuyForm = ({funds}) => {
         )
       }) 
     : null;
+    console.log(fundError);
 
   return (
     <div className='position-relative d-flex align-items-center' style={{minWidth: '200px', minHeight:'100px'}}>
@@ -161,10 +164,10 @@ const BuyForm = ({funds}) => {
             </div>
             <div>
               <form className="position-relative d-flex" onSubmit={handleSubmit}>
-                <input className="pl-2 pr-2" type='text' value={ticker} onChange={handleChange} placeholder='Ticker' required/>
+                <input className="pl-2 pr-2 buyInput" type='text' value={ticker} onChange={handleChange} placeholder='Ticker' required/>
                 <div className={ticker && !clicked ? 'position-absolute bg-white pt-2' : 'd-none'} style={{top:'29px', width: '186px'}}> {possibleMatches} </div>
-                <input className="pl-2 pr-2" type='number' min='1' value={share} onChange={handleSetShare} placeholder='Share' required/>
-                <button >Buy</button>
+                <input className="pl-2 pr-2 buyInput" type='number' min='1' value={share} onChange={handleSetShare} placeholder='Share' required/>
+                <button className='btn btn-dark buyBtn' >Buy</button>
               </form>
               {fundError && (
                 <div className='text-danger'>

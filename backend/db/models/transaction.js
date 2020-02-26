@@ -30,7 +30,7 @@ const transactionSchema = new Schema({
   transactionTime: { 
         type: Date, 
         require: true, 
-        default: Date.now()
+        default: Date.now
     }
 });
 
