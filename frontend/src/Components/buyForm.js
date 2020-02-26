@@ -75,7 +75,7 @@ const BuyForm = ({funds, fetchPortfolio}) => {
         },
         body: JSON.stringify({ order })
       })
-      await fetchPortfolio(); // TODO/
+      fetchPortfolio(); 
     }
   }
 
