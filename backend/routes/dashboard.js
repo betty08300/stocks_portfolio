@@ -32,7 +32,7 @@ dashboardRouter.get('/transactions', async(req, res) => {
 dashboardRouter.get('/portfolio', async(req, res) => {
     let user = await User.findById(req.userId); 
     user = user.toObject();
-    res.json({stocks: user.stocks});
+    res.json({funds: user.funds, stocks: user.stocks});
 });
 
 dashboardRouter.post('/portfolio', async(req, res) => {

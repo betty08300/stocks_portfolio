@@ -1,37 +1,55 @@
+import { css } from "@emotion/core";
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ScaleLoader from "react-spinners/ScaleLoader";
 import StockItem from './stockItem';
 import {apiKey} from '../Constants/index'
 import {currencyFormatter} from '../Constants/helper'
+import BuyForm from './buyForm'
+
+const spinner = css`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+`
 
 const Portfolio = (props) => {
-  const [ticker, setTicker] = useState('');
-  const [share, setShare] = useState('');
   const [ stocks, setStocks ] = useState([]);
-  const [stockPrices, setStockPrices] = useState({})
+  const [ funds, setFunds] = useState([]);
+  const [stockInfos, setStockInfos] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(()=> {fetchPortfolio()}, []); 
-  
-  const getStockInfoAPI = async(ticker) => {
-    const res = await fetch(`https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${apiKey}`)
-    const stock = await res.json()
-    return { 
-      companyName: stock.companyName,
-      price: stock.latestPrice,
+  useEffect(()=> {
+    fetchPortfolio();
+  }, []); 
+
+  const getStocksInfoAPI = async(tickers) => {
+    const res = await fetch(`https://cloud.iexapis.com/v1/stock/market/batch?types=quote&symbols=${tickers}&range=5y%20&token=${apiKey}`)
+    const stocks = await res.json()  
+    const stockLatestPrices = {};
+
+    for(const key in stocks){
+      const open = stocks[key].quote.open === null ? stocks[key].quote.previousClose : stocks[key].quote.open;
+      const latestPrice = stocks[key].quote.latestPrice;
+      const change = (latestPrice - open)/open
+      let color;
+
+      if(change < 0){
+        color = 'red';
+      } else if (change === 0) {
+        color = 'grey';
+      } else {
+        color = 'green';
+      }
+
+      stockLatestPrices[key] = {
+        changePercentage: (change*100).toFixed(2) + '%',
+        color,
+        latestPrice,
+      };
     }
-  }
-
-  const getStocksInfoAPI = (tickers) => {
-    return fetch(`https://cloud.iexapis.com/v1/stock/market/batch?types=quote&symbols=${tickers}&range=5y%20&token=${apiKey}`)
-      .then(response => response.json()).then(res => {
-        const stockLatestPrices = {};
-
-        for(const key in res){
-          stockLatestPrices[key] = res[key].quote.latestPrice;
-        }
-
-        return stockLatestPrices;
-      })
+    console.log(stockLatestPrices)
+    return stockLatestPrices;
   }
   
 
@@ -46,94 +64,55 @@ const Portfolio = (props) => {
     const portfolioStocks = portfolio.stocks;
     const portfolioTickers = portfolioStocks.map(({ticker}) => ticker);
     const prices = await getStocksInfoAPI(portfolioTickers.join(','));
-    
     setStocks(portfolioStocks);
-    setStockPrices(prices);
+    setFunds(portfolio.funds)
+    setStockInfos(prices);
+    setIsLoading(false);
   }
-
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    const stockInfo = await getStockInfoAPI(ticker);
-    const order = { ticker, share, ...stockInfo }; 
-    const response = await fetch('/dashboard/portfolio', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-     
-      body: JSON.stringify({ order })
-    })
-    console.log(await response.json()); 
-    
-  }
-
-  const handleChange = (e) => {
-    setTicker(e.target.value.toUpperCase());
-  }
-
-  const handleSetShare = (e) => {
-    setShare(Number(e.target.value));
-  };
 
   const totalPortfolio = stocks.length > 0 ? stocks.reduce((acc, {ticker, share}) => {
-      return acc + (stockPrices[ticker] * share)}, 0)
+      return acc + (stockInfos[ticker] ? stockInfos[ticker].latestPrice * share : 0)}, 0)
     : 0
   
+
   const stockItems = stocks.map((stock, idx) =>  
-      <StockItem stock={stock} key={idx} price={stockPrices[stock.ticker]}/>
-    ) 
+    <StockItem stock={stock} key={idx} stockInfos={stockInfos[stock.ticker]}/>
+  ) 
   
-  console.log('stockPrices:',stockPrices)
-  return (
-    <div>
-      <h1>
-        Portfolio ${currencyFormatter(totalPortfolio.toFixed(2))}
-      </h1>
-
-      <div>
-
-      <table className='table'>
-            <thead>
-                <tr>
-                    <th scope='col'>Ticker</th>
-                    <th scope='col'>Shares</th>
-                    <th scope='col'>Price</th>
-                    <th scope='col'>Total Value</th>
-
-                </tr>
-            </thead>
-            <tbody>
-              {stockItems}
-            </tbody>
-            </table>
-
-
+  return isLoading ? 
+      <ScaleLoader css={spinner} size={150} color="#36D7B7" loading={isLoading}/> 
+    : (
+      <div className="p-5">
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex flex-column">
+            <h1>
+              Portfolio ${currencyFormatter(totalPortfolio.toFixed(2))}
+            </h1>
+            <div>
+              <Link to='/dashboard/transactions'>Transaction</Link>
+            </div>
+          </div>
+          <BuyForm funds={funds}/>
+          </div>
         <div>
-          <div>
-            Cash - $XXXXX
-            Cost - $xxxx
-          </div>
-          <div>
-
-
-
-            <form onSubmit={handleSubmit}>
-              <input className="row" type='text' value={ticker} onChange={handleChange} placeholder='Ticker'/>
-              <input className="row" type='number' value={share} onChange={handleSetShare} placeholder='Share'/>
-              <button className="row">Buy</button>
-            </form>
-          </div>
+        <table className='table'>
+          <thead>
+              <tr>
+                  <th scope='col'>Ticker</th>
+                  <th scope='col'>Company</th>
+                  <th scope='col'>Shares</th>
+                  <th scope='col'>Price</th>
+                  <th scope='col'>Total Value</th>
+              </tr>
+          </thead>
+          <tbody>
+            {stockItems}
+          </tbody>
+        </table>
         </div>
-      </div>
-      <div>
-        <div></div>
-        <Link to='/dashboard/transactions'>Transaction</Link>
         
       </div>
-
-     
-    </div>
-  )
+      )
 }
 
 export default Portfolio;

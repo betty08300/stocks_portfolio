@@ -27,7 +27,7 @@ const Transactions = (props) => {
     })
 
     return (
-        <div>
+        <div className="p-5">
             <div className='container'>
                 <div className='row'>
                     <div className='col'>
