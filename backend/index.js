@@ -8,6 +8,7 @@ const userRouter = require('./routes/user');
 const dashboardRouter = require('./routes/dashboard');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const path = require('path'); 
 
 const seed = async () => {
     const db = await connectDatabase();
@@ -53,14 +54,14 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 app.use('/user', userRouter);
 app.use('/dashboard', dashboardRouter);
 
 
 
 app.listen(port, () => console.log(`Express running on port ${port}!`));
-
-
-
-
-

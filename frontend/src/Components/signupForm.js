@@ -25,7 +25,7 @@ const SignupForm = (props) => {
         })
         if (resp.status === 200) {
             props.history.push('/dashboard/portfolio');
-            props.changeCurrentUser(resp.user)
+    
         } else {
             console.log('invalid email or password'); 
         }

@@ -27,7 +27,6 @@ const Portfolio = (props) => {
     const res = await fetch(`https://cloud.iexapis.com/v1/stock/market/batch?types=quote&symbols=${tickers}&range=5y%20&token=${apiKey}`)
     const stocks = await res.json()  
     const stockLatestPrices = {};
-
     for(const key in stocks){
       const open = stocks[key].quote.open === null ? stocks[key].quote.previousClose : stocks[key].quote.open;
       const latestPrice = stocks[key].quote.latestPrice;
@@ -61,10 +60,15 @@ const Portfolio = (props) => {
     })
     const portfolio = await res.json();
     const portfolioStocks = portfolio.stocks;
-    const portfolioTickers = portfolioStocks.map(({ticker}) => ticker);
-    const prices = await getStocksInfoAPI(portfolioTickers.join(','));
-    setStockInfos(prices);
-    setStocks(portfolioStocks);
+
+    console.log(portfolioStocks);
+    if (portfolioStocks.length) {
+      const portfolioTickers = portfolioStocks.map(({ticker}) => ticker);
+      const prices = await getStocksInfoAPI(portfolioTickers.join(','));
+      setStockInfos(prices);
+      setStocks(portfolioStocks);
+    }
+
     setFunds(portfolio.funds)
     setIsLoading(false);
   }
