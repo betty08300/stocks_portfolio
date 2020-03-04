@@ -15,7 +15,7 @@ const spinner = css`
 
 const Portfolio = (props) => {
   const [ stocks, setStocks ] = useState([]);
-  const [ funds, setFunds] = useState([]);
+  const [ funds, setFunds] = useState(null);
   const [stockInfos, setStockInfos] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -61,7 +61,6 @@ const Portfolio = (props) => {
     const portfolio = await res.json();
     const portfolioStocks = portfolio.stocks;
 
-    console.log(portfolioStocks);
     if (portfolioStocks.length) {
       const portfolioTickers = portfolioStocks.map(({ticker}) => ticker);
       const prices = await getStocksInfoAPI(portfolioTickers.join(','));
@@ -73,9 +72,13 @@ const Portfolio = (props) => {
     setIsLoading(false);
   }
 
-  const totalPortfolio = stocks.length > 0 ? stocks.reduce((acc, {ticker, share}) => {
-      return acc + (stockInfos[ticker] ? stockInfos[ticker].latestPrice * share : 0)}, 0)
-    : 0
+  // const totalPortfolio = stocks.length > 0 ? stocks.reduce((acc, {ticker, share}) => {
+  //     return acc + (stockInfos[ticker] ? stockInfos[ticker].latestPrice * share : 0)}, 0)
+  //   : 0
+
+  const totalPortfolio = stocks.reduce((sum, {ticker, share}) => {
+    return sum + (stockInfos[ticker].latestPrice * share);
+  }, 0)
   
   console.log(stockInfos);
 

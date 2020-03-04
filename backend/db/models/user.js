@@ -47,7 +47,7 @@ userSchema.methods.buy = async function(order){
     });
     const match = matchStocks[0];
     if (match === undefined) {
-        await this.stocks.push({company, ticker,share}); 
+        await this.stocks.push({company, ticker, share}); 
     } else {
         match.share += share
     }

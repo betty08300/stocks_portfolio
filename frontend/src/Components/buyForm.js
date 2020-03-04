@@ -17,6 +17,7 @@ const costSpinner = css`
 `
 
 const BuyForm = ({funds, fetchPortfolio}) => {
+  
   const [allTickers, setAllTickers] = useState([]);
   const [allTickersObj, setAllTickersObj] = useState({});
   const [stockInfo, setStockInfo] = useState(1);
@@ -51,7 +52,7 @@ const BuyForm = ({funds, fetchPortfolio}) => {
       return stock.symbol
     })
 
-    return {tickers, tickersObj}
+    return {tickers, tickersObj}; 
   }
 
   const fetchAllTickers = async () => {
@@ -65,7 +66,7 @@ const BuyForm = ({funds, fetchPortfolio}) => {
     e.preventDefault();
     if(funds - stockInfo.price * share < 0) {
       setFundError('Not enough funds')
-    } else{
+    } else {
       if(fundError) setFundError('');
       const order = { ticker, share, ...stockInfo }; 
       await fetch('/dashboard/portfolio', {
@@ -80,19 +81,21 @@ const BuyForm = ({funds, fetchPortfolio}) => {
   }
 
   const matches = () => {
-    let possibleMatches = [];
+    // let possibleMatches = [];
     if (ticker.length < 1){
       return null;
     }
 
-    if (allTickers){
-      allTickers.forEach( tkr => {
-        let sym = tkr.slice(0, ticker.length);
-        if (sym === ticker.toUpperCase()){
-          possibleMatches.push(tkr);
-        }
-      });
-    }
+    // allTickers.forEach( tkr => {
+    //   let sym = tkr.slice(0, ticker.length);
+    //   if (sym === ticker.toUpperCase()){
+    //     possibleMatches.push(tkr);
+    //   }
+    // });
+
+    let possibleMatches = allTickers.filter(symbol => symbol.startsWith(ticker))
+
+
     if(possibleMatches.length === 0) {
       possibleMatches = ['No such ticker'];
     }
@@ -152,7 +155,7 @@ const BuyForm = ({funds, fetchPortfolio}) => {
                 Cash - ${currencyFormatter(funds.toFixed(2))}
               </h4>
               <h4 className="position-relative">
-                Cost -{' '}
+                Cost - 
                 {isLoadingCost ? <span>loading...</span>
                 : (
                   <span>
