@@ -81,20 +81,11 @@ const BuyForm = ({funds, fetchPortfolio}) => {
   }
 
   const matches = () => {
-    // let possibleMatches = [];
     if (ticker.length < 1){
       return null;
-    }
-
-    // allTickers.forEach( tkr => {
-    //   let sym = tkr.slice(0, ticker.length);
-    //   if (sym === ticker.toUpperCase()){
-    //     possibleMatches.push(tkr);
-    //   }
-    // });
+    } 
 
     let possibleMatches = allTickers.filter(symbol => symbol.startsWith(ticker))
-
 
     if(possibleMatches.length === 0) {
       possibleMatches = ['No such ticker'];
