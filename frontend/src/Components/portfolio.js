@@ -72,15 +72,10 @@ const Portfolio = (props) => {
     setIsLoading(false);
   }
 
-  // const totalPortfolio = stocks.length > 0 ? stocks.reduce((acc, {ticker, share}) => {
-  //     return acc + (stockInfos[ticker] ? stockInfos[ticker].latestPrice * share : 0)}, 0)
-  //   : 0
-
   const totalPortfolio = stocks.reduce((sum, {ticker, share}) => {
     return sum + (stockInfos[ticker].latestPrice * share);
   }, 0)
   
-  console.log(stockInfos);
 
   const stockItems = stocks.map((stock, idx) =>  
     <StockItem stock={stock} key={idx} stockInfos={stockInfos[stock.ticker]}/>
