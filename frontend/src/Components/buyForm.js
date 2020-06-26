@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { css } from "@emotion/core";
-import {apiKey} from '../Constants/index'
-import {currencyFormatter} from '../Constants/helper'
+import { apiKey } from '../Constants/index'
+import { currencyFormatter } from '../Constants/helper'
 import ScaleLoader from "react-spinners/ScaleLoader";
 
 const spinner = css`
@@ -16,8 +16,7 @@ const costSpinner = css`
   right: -20px;
 `
 
-const BuyForm = ({funds, fetchPortfolio}) => {
-  
+const BuyForm = ({ funds, fetchPortfolio }) => {
   const [allTickers, setAllTickers] = useState([]);
   const [allTickersObj, setAllTickersObj] = useState({});
   const [stockInfo, setStockInfo] = useState(1);
@@ -27,13 +26,14 @@ const BuyForm = ({funds, fetchPortfolio}) => {
   const [isLoadingCost, setIsLoadingCost] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [fundError, setFundError] = useState('');
+  const [companies, setCompanies] = useState({});
 
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchAllTickers()
   }, [])
 
-  const getStockInfoAPI = async(ticker) => {
+  const getStockInfoAPI = async (ticker) => {
     const res = await fetch(`https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${apiKey}`)
     const stock = await res.json()
     return {
@@ -42,56 +42,65 @@ const BuyForm = ({funds, fetchPortfolio}) => {
     }
   }
 
-  const getAllTickers = async() => {
-    const res = await fetch (`https://cloud.iexapis.com/beta/ref-data/symbols?token=${apiKey}`)
+  const getAllTickers = async () => {
+    const res = await fetch(`https://cloud.iexapis.com/beta/ref-data/symbols?token=${apiKey}`)
     const stocks = await res.json();
     const tickersObj = {}
-
+    const allCompanies = {}
     const tickers = stocks.map(stock => {
       tickersObj[stock.symbol] = true
+      allCompanies[stock.name] = stock.symbol
       return stock.symbol
     })
 
-    return {tickers, tickersObj}; 
+    setCompanies(allCompanies);
+
+    return { tickers, tickersObj };
   }
 
   const fetchAllTickers = async () => {
-    const {tickers, tickersObj} = await getAllTickers()
+    const { tickers, tickersObj } = await getAllTickers()
     setAllTickers(tickers)
     setAllTickersObj(tickersObj)
-    setTimeout(() => setIsLoading(false), 1000) 
+    setTimeout(() => setIsLoading(false), 1000)
   }
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(funds - stockInfo.price * share < 0) {
+    if (funds - stockInfo.price * share < 0) {
       setFundError('Not enough funds')
     } else {
-      if(fundError) setFundError('');
-      const order = { ticker, share, ...stockInfo }; 
+      if (fundError) setFundError('');
+      const order = { ticker, share, ...stockInfo };
+      if (!allTickers.includes(ticker)) return;
+
       await fetch('/dashboard/portfolio', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ order })
-      })
-      fetchPortfolio(); 
+      });
+      fetchPortfolio();
     }
   }
 
   const matches = () => {
-    if (ticker.length < 1){
+    if (ticker.length < 1) {
       return null;
-    } 
+    }
 
-    let possibleMatches = allTickers.filter(symbol => symbol.startsWith(ticker))
+    const matchingTickers = allTickers.filter(symbol => symbol.startsWith(ticker));
+    const matchingCompanies = Object.keys(companies)
+      .filter((companyName) => companyName.toLowerCase().startsWith(ticker.toLowerCase()))
+      .map((companyName) => companies[companyName]);
 
-    if(possibleMatches.length === 0) {
+    let possibleMatches = [...matchingTickers, ...matchingCompanies]
+    if (possibleMatches.length === 0) {
       possibleMatches = ['No such ticker'];
     }
 
-    return possibleMatches.slice(0,5);
+    return possibleMatches.slice(0, 5);
   }
 
   const handleClick = async (ticker) => {
@@ -101,15 +110,15 @@ const BuyForm = ({funds, fetchPortfolio}) => {
     setStockInfo(await getStockInfoAPI(ticker));
     setIsLoadingCost(false);
   }
-  
+
   const handleChange = async (e) => {
-    if(clicked){
+    if (clicked) {
       setClicked(false);
     }
 
     const ticker = e.target.value.toUpperCase()
-    
-    if(allTickersObj[ticker]){
+
+    if (allTickersObj[ticker]) {
       setIsLoadingCost(true);
       setTicker(ticker);
       setStockInfo(await getStockInfoAPI(ticker));
@@ -123,22 +132,20 @@ const BuyForm = ({funds, fetchPortfolio}) => {
     setShare(Number(e.target.value));
   };
 
-  let possibleMatches = matches() 
+  let possibleMatches = matches()
     ? matches().map((ticker, idx) => {
-        return ticker.includes('ticker')
-          ? <div key={ticker}>ticker</div>
-          : (
-            <div className="mb-3 search-hover text-dark" key={idx} onClick={() => handleClick(ticker)} style={{paddingLeft: '10px'}}>
-              {ticker}
-            </div>
-        )
-      }) 
+      return (
+        <div className="mb-3 search-hover text-dark" key={idx} onClick={() => { handleClick(ticker) }} style={{ paddingLeft: '10px' }}>
+          {ticker}
+        </div>
+      )
+    })
     : null;
 
   return (
-    <div className='position-relative d-flex align-items-center' style={{minWidth: '200px', minHeight:'100px'}}>
-      {isLoading 
-        ? <ScaleLoader css={spinner} size={150} color="#36D7B7" loading={isLoading}/>
+    <div className='position-relative d-flex align-items-center' style={{ minWidth: '200px', minHeight: '100px' }}>
+      {isLoading
+        ? <ScaleLoader css={spinner} size={150} color="#36D7B7" loading={isLoading} />
         : (
           <div className="d-flex flex-column align-items-between">
             <div className="d-flex mb-2">
@@ -146,20 +153,20 @@ const BuyForm = ({funds, fetchPortfolio}) => {
                 Cash - ${currencyFormatter(funds.toFixed(2))}
               </h4>
               <h4 className="position-relative">
-                Cost - 
+                Cost -
                 {isLoadingCost ? <span>loading...</span>
-                : (
-                  <span>
-                    ${currencyFormatter(((stockInfo.price || 0) * share).toFixed(2))}
-                  </span>
-                )}
+                  : (
+                    <span>
+                      ${currencyFormatter(((stockInfo.price || 0) * share).toFixed(2))}
+                    </span>
+                  )}
               </h4>
             </div>
             <div>
               <form className="position-relative d-flex" onSubmit={handleSubmit}>
-                <input className="pl-2 pr-2 buyInput" type='text' value={ticker} onChange={handleChange} placeholder='Ticker' required/>
-                <div className={ticker && !clicked ? 'position-absolute bg-white pt-2' : 'd-none'} style={{top:'29px', width: '186px'}}> {possibleMatches} </div>
-                <input className="pl-2 pr-2 buyInput" type='number' min='1' value={share} onChange={handleSetShare} placeholder='Share' required/>
+                <input className="pl-2 pr-2 buyInput" type='text' value={ticker} onChange={handleChange} placeholder='Ticker' required />
+                <div className={ticker && !clicked ? 'position-absolute bg-white pt-2' : 'd-none'} style={{ top: '29px', width: '186px' }}> {possibleMatches} </div>
+                <input className="pl-2 pr-2 buyInput" type='number' min='1' value={share} onChange={handleSetShare} placeholder='Share' required />
                 <button className='btn btn-dark buyBtn' >Buy</button>
               </form>
               {fundError && (
