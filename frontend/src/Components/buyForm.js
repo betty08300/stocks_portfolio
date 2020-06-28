@@ -165,7 +165,7 @@ const BuyForm = ({ funds, fetchPortfolio }) => {
             <div>
               <form className="position-relative d-flex" onSubmit={handleSubmit}>
                 <input className="pl-2 pr-2 buyInput" type='text' value={ticker} onChange={handleChange} placeholder='Ticker' required />
-                <div className={ticker && !clicked ? 'position-absolute bg-white pt-2' : 'd-none'} style={{ top: '29px', width: '186px' }}> {possibleMatches} </div>
+                <div className={ticker && !clicked ? 'position-absolute bg-white pt-2' : 'd-none'} style={{ top: '29px', width: '183px', marginLeft:"5px" }}> {possibleMatches} </div>
                 <input className="pl-2 pr-2 buyInput" type='number' min='1' value={share} onChange={handleSetShare} placeholder='Share' required />
                 <button className='btn btn-dark buyBtn' >Buy</button>
               </form>
