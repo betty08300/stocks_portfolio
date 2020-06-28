@@ -22,9 +22,7 @@ dashboardRouter.use(async(req, res, next)=>{
 })
 
 dashboardRouter.get('/transactions', async(req, res) => {
-    //console.log('transactionuserId', req.userId);
     let user = await User.findById(req.userId); 
-    //res.status(200).json({message: 'hello'}); 
     user = user.toObject()
     res.json({transactions: user.transactions}); 
 });

@@ -73,7 +73,6 @@ const Portfolio = (props) => {
   }
 
   const totalPortfolio = stocks.reduce((sum, { ticker, share }) => {
-    console.log(ticker);
     return sum + (stockInfos[ticker].latestPrice * share);
   }, 0)
 

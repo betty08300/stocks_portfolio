@@ -10,11 +10,6 @@ const spinner = css`
   left: 30%;
 `
 
-const costSpinner = css`
-  position: absolute;
-  top: 0;
-  right: -20px;
-`
 
 const BuyForm = ({ funds, fetchPortfolio }) => {
   const [allTickers, setAllTickers] = useState([]);

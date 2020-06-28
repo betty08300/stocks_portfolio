@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const TransactionsItem = (props) => {
     const {ticker, company, transactionTime, status, share, price} = props.transaction

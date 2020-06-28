@@ -9,31 +9,26 @@ import {
   Switch
 } from 'react-router-dom';
 import Portfolio from './Components/portfolio';
-import './index.scss'; 
+import './index.scss';
 
-class App extends React.Component {
-  constructor(props){
-    super(props);
-  }
+const App = () => {
 
-  render(){
-    return(
-      <div>
-        <BrowserRouter>
-          <Switch>
-            <Route path='/signup' component={SignupForm}/>
-            <Route path='/login' component={LoginForm} />
-            <Route path='/dashboard/portfolio' component={Portfolio} />
-            <Route path='/dashboard/transactions' component={Transaction}/>
-            <Route path='/' component={Splash}/>
+  return (
+    <div>
+      <BrowserRouter>
+        <Switch>
+          <Route path='/signup' component={SignupForm} />
+          <Route path='/login' component={LoginForm} />
+          <Route path='/dashboard/portfolio' component={Portfolio} />
+          <Route path='/dashboard/transactions' component={Transaction} />
+          <Route path='/' component={Splash} />
 
 
-          </Switch>
-    
-        </BrowserRouter>
-      </div>
-    )
-  }
+        </Switch>
+
+      </BrowserRouter>
+    </div>
+  )
 }
 
 

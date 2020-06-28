@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 const Splash = (props) => {
 
     const demoSignin = async() => {
-        
         const user = { email: 'betty@gmail.com', password: '123456' }
-        console.log(user)
         const resp = await fetch('/user/login', {
             method: 'POST',
             headers: {
@@ -19,7 +17,6 @@ const Splash = (props) => {
         } else {
             console.log('invalid email or password'); 
         }
-        
     }
 
     return (

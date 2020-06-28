@@ -43,9 +43,6 @@ const seed = async () => {
         price: 1,
         share: 10
     })
-
-    // console.log(user);
-
 }
 
 seed();

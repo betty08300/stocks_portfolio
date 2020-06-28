@@ -6,9 +6,7 @@ const { generateToken } = require('../util/session_token');
 
 
 userRouter.post('/signup', async(req, res) => {  
-    console.log(req.body)
     const user = await User.createAuthUser(req.body.user);
-    console.log(user)
     const payload = { userId: user.id };
     const token = await generateToken(payload);
     res.status(200).cookie('token', token).json({message: 'success to sign up'})
