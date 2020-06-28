@@ -27,7 +27,7 @@ const Splash = (props) => {
             <div className="btn-group-vertical splash-box">
                 <Link to='/signup' className='btn btn-outline-dark clickBtn' style={{margin:'30px 0'}}>Register</Link>
                 <Link to='/login' className='btn btn-outline-dark clickBtn'>Login</Link>
-                <div className='btn btn-outline-dark clickBtn' onClick={demoSignin}>Demo Login</div>
+                <div className='btn btn-outline-dark clickBtn' onClick={demoSignin} style={{marginTop:"17px"}}>Demo Login</div>
             </div>
         </div>
     )
