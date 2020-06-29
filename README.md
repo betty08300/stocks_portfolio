@@ -2,7 +2,7 @@
 
 * A stock portfolio app that with secure authenticate by using cookies and jason web token.  
 
-[Live](http://ec2-3-93-143-41.compute-1.amazonaws.com/)
+[Live](http://ec2-54-80-217-157.compute-1.amazonaws.com/)
 
 ## Technologies 
 
